@@ -22,7 +22,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("course", "onCreate");
     }
 
     @Override
@@ -31,26 +30,6 @@ public class MainActivity extends ActionBarActivity {
 
         // This method is called when this activity is put foreground.
 
-        // *** SOLUTION ***
-        helper = new CourseDBHelper(this.getApplicationContext());
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT SUM(value*credit) GP, SUM(credit) CR FROM course;", null);
-        cursor.moveToFirst();
-        double gp = cursor.getDouble(0);
-        int cr = cursor.getInt(1);
-        double gpa = gp/cr;
-
-        TextView tvGPA = (TextView)findViewById(R.id.tvGPA);
-        tvGPA.setText(String.format("%.2f", gpa));
-
-        TextView tvGP = (TextView)findViewById(R.id.tvGP);
-        tvGP.setText(String.format("%.2f", gp));
-
-        TextView tvCR = (TextView)findViewById(R.id.tvCR);
-        tvCR.setText(Integer.toString(cr));
-        // *** SOLUTION ***
-
-        Log.d("course", "onResume");
     }
 
     public void buttonClicked(View v) {
@@ -82,17 +61,6 @@ public class MainActivity extends ActionBarActivity {
                 int credit = data.getIntExtra("credit", 0);
                 String grade = data.getStringExtra("grade");
 
-                // *** SOLUTION ***
-                helper = new CourseDBHelper(this.getApplicationContext());
-                SQLiteDatabase db = helper.getWritableDatabase();
-                ContentValues v = new ContentValues();
-                v.put("code", code);
-                v.put("credit", credit);
-                v.put("grade", grade);
-                v.put("value", gradeToValue(grade));
-                db.insert("course", null, v);
-                db.close();
-                // *** SOLUTION ***
             }
         }
 
